@@ -3,6 +3,11 @@ from itertools import product
 import pandas as pd
 import neal
 
+#######################################################################
+# I referd to the following website for writing this program.         #
+#   https://quantum.fixstars.com/techresouces/application/sudoku/     #
+#######################################################################
+
 class Sudoku:
   def __init__(self, initialCondition):
     self.selectList = dict()
