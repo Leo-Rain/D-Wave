@@ -180,15 +180,23 @@ sudoku = Sudoku(initialCondition)
 sudoku.preAnnealing()
 sudoku.genQubo()
 
-solverType = 0    # select solver type 
 
-if solverType == 0:  #Real QPU
+args = sys.argv
+
+if args[1] == '0':  # RealQPU
   from dwave.system.samplers import DWaveSampler
   from dwave.system.composites import EmbeddingComposite
   sampler = EmbeddingComposite(DWaveSampler())
   response = sampler.sample_qubo(sudoku.q, num_reads=20)
 
-if solverType == 1:  #neal
+if args[1] == '1':  # RealQPU + qbsolv
+  from dwave.system.samplers import DWaveSampler
+  from dwave.system.composites import EmbeddingComposite
+  from dwave_qbsolv import QBSolv
+  sampler = EmbeddingComposite(DWaveSampler())
+  response = QBSolv().sample_qubo(sudoku.q, solver=sampler, solver_limit=200)
+
+if args[1] == '2':  # neal
   import neal
   sampler = neal.SimulatedAnnealingSampler()
   response = sampler.sample_qubo(sudoku.q, num_reads=20)
