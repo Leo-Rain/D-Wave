@@ -201,6 +201,12 @@ if args[1] == '2':  # neal
   sampler = neal.SimulatedAnnealingSampler()
   response = sampler.sample_qubo(sudoku.q, num_reads=20)
 
+if args[1] == '3':  # neal + qbsolv
+  import neal
+  from dwave_qbsolv import QBSolv
+  sampler = neal.SimulatedAnnealingSampler()
+  response = QBSolv().sample_qubo(sudoku.q, solver=sampler, solver_limit=200)
+
 
 sudoku.mergeAnnealingResult(response.first.sample)
 
