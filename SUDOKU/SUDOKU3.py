@@ -1,10 +1,8 @@
 import sys
 from itertools import product
-import pandas as pd
-import neal
 
 #######################################################################
-# I referd to the following website for writing this program.         #
+# This code thanks to the following site.                             #
 #   https://quantum.fixstars.com/techresouces/application/sudoku/     #
 #######################################################################
 
@@ -182,8 +180,19 @@ sudoku = Sudoku(initialCondition)
 sudoku.preAnnealing()
 sudoku.genQubo()
 
-sampler = neal.SimulatedAnnealingSampler()
-response = sampler.sample_qubo(sudoku.q, num_reads=20)
+solverType = 0    # select solver type 
+
+if solverType == 0:  #Real QPU
+  from dwave.system.samplers import DWaveSampler
+  from dwave.system.composites import EmbeddingComposite
+  sampler = EmbeddingComposite(DWaveSampler())
+  response = sampler.sample_qubo(sudoku.q, num_reads=20)
+
+if solverType == 1:  #neal
+  import neal
+  sampler = neal.SimulatedAnnealingSampler()
+  response = sampler.sample_qubo(sudoku.q, num_reads=20)
+
 
 sudoku.mergeAnnealingResult(response.first.sample)
 
